@@ -9,8 +9,8 @@ push_notification:
   pushover: 
     abc: 123
   ntfy:
-    topic: smoke
-    title: bbq
+    topic: bbq
+    title: temperature
     servers: 
-      - http://0.0.0.0:30000
-      # - https://ntfy.sh
+      - https://ntfy.sh
+      # - http://0.0.0.0:30000

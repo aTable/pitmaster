@@ -51,4 +51,5 @@
       - "/var/{{ application_name }}/etc:/etc/ntfy"
     publish:
       - 30000:80
+    # network: pitmaster-network
     command: serve

@@ -6,10 +6,10 @@
   become: yes
   # become_method: sudo
   roles:
-    # - pitmaster
-    # - ntfy
+    - pitmaster
+    - ntfy
     - caddy
-    # - prometheus
-    # - prometheus_alertmanager
-    # - prometheus_alertmanager_ntfy_bridge
-    # - grafana
+    - prometheus
+    - prometheus_alertmanager
+    - prometheus_alertmanager_ntfy_bridge
+    - grafana
