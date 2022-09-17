@@ -37,17 +37,19 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "text",
+            "mode": "fixed"
           },
           "custom": {
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Celsius",
             "axisPlacement": "auto",
-            "axisSoftMin": 0,
+            "axisSoftMax": 200,
+            "axisSoftMin": -1,
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 5,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -70,7 +72,7 @@
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "line"
+              "mode": "area"
             }
           },
           "mappings": [],
@@ -78,22 +80,34 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "yellow",
+                "color": "transparent",
                 "value": null
               },
               {
-                "color": "super-light-blue",
-                "value": 107.222
+                "color": "light-green",
+                "value": 107.2
               },
               {
-                "color": "super-light-blue",
-                "value": 121.111
+                "color": "light-green",
+                "value": 121.1
+              },
+              {
+                "color": "transparent",
+                "value": 121.2
               }
             ]
           },
           "unit": "celsius"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": []
+          }
+        ]
       },
       "gridPos": {
         "h": 9,
@@ -139,17 +153,19 @@
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "palette-classic"
+            "fixedColor": "text",
+            "mode": "fixed"
           },
           "custom": {
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "Fahrenheit",
             "axisPlacement": "auto",
+            "axisSoftMax": 400,
             "axisSoftMin": 0,
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 5,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -172,7 +188,7 @@
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "line"
+              "mode": "area"
             }
           },
           "mappings": [],
@@ -180,16 +196,20 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
+                "color": "transparent",
                 "value": null
               },
               {
-                "color": "super-light-blue",
+                "color": "light-green",
                 "value": 225
               },
               {
-                "color": "super-light-blue",
+                "color": "light-green",
                 "value": 250
+              },
+              {
+                "color": "transparent",
+                "value": 251
               }
             ]
           },
@@ -233,7 +253,7 @@
       "type": "timeseries"
     }
   ],
-  "refresh": false,
+  "refresh": "10s",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [],
@@ -241,7 +261,7 @@
     "list": []
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-5m",
     "to": "now"
   },
   "timepicker": {

@@ -1,4 +1,3 @@
-temperature_display_mode: #automatically calculated, no need to provide
 temperature_minimum_fahrenheit: 225
 temperature_maximum_fahrenheit: 250
 temperature_minimum_celsius: 107.222
@@ -14,3 +13,4 @@ push_notification:
     servers: 
       - https://ntfy.sh
       # - http://0.0.0.0:30000
+temperature_display_mode: #automatically calculated, no need to provide

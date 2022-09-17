@@ -1,6 +1,35 @@
 # Pitmaster
 
-Build your own bbq monitoring solution.
+Build your own bbq monitoring solution. Eventually, I'll update with a fan to completely automate the cook. Maybe.
+
+## What is it
+
+A temperature probe in a smoker connected to a device that frequently reads the temperature and analyzes it.
+
+For normals
+
+![img](docs/run-monitor-script.png)
+
+For fahrenheiters
+
+![img](docs/run-monitor-script-fahrenheit.png)
+
+- if its outside the configured temperature range, flash a red LED and send a push notification
+- if its within the configured temperature range, flash a green LED
+
+[Ntfy](https://ntfy.sh/) is used for push notifications which has a phone app and website so you can receive real time updates anywhere:
+
+![img](docs/ntfy-message.PNG)
+
+Also included is a website that really only serves to provide convenient links
+
+![img](docs/homepage.PNG)
+
+To a grafana dasboard
+
+![img](docs/grafana-dashboard.png)
+
+It's quite simple to do with a bit of persistence so don't think its overwhelming. You don't need to know any code to build your own!
 
 ## Hardware parts
 
@@ -36,15 +65,17 @@ Put the MAX31855 anywhere into the breadboard, note that the actual location doe
 
 For beginners, note that the MAX31855 is inserted on the left half (ABCDE) and positioned not in column A as thats where the jumper cables connect.
 
+Make sure you place the jumper cables in the exact same places (color doesn't matter)
+
 Connect the GPIO to breadboard circuit like so
 
-| GPIO         | MAX31855 breadboard |
-| ------------ | ------------------- |
-| 3.3V (#1)    | Vin                 |
-| GND (#6)     | GND                 |
-| MISO (#21)   | DO                  |
-| GPIO 5 (#29) | CS                  |
-| SCLK (#23)   | CLK                 |
+| GPIO   | GPIO position # | MAX31855 |
+| ------ | --------------- | -------- |
+| 3.3V   | #1              | Vin      |
+| GND    | #6              | GND      |
+| MISO   | #21             | DO       |
+| GPIO 5 | #29             | CS       |
+| SCLK   | #23             | CLK      |
 
 Optionally, add your heatsink
 
@@ -67,9 +98,37 @@ sudo adduser pitmaster
 - [rpi 3 model B GPIO diagram](https://pi4j.com/1.2/pins/model-3b-rev1.html)
 - [rpi 3 model B GPIO diagram](https://community.element14.com/products/raspberry-pi/m/files/17428)
 
-## Simple deployment
+## Configuration
 
-Verify the `config.yml` is setup to your preferred temperature range.
+Verify the `config.yml` is setup to your liking. By default, it will:
+
+- read temperatures every 5 seconds
+- check current temperature is within the 107&deg;C-121&deg;C (225&deg;F - 250&deg;F) range
+  - when you're in the range
+    - light a green LED
+  - when you're out of the range
+    - light a red LED
+    - send a push notification to a [public ntfy instance](https://ntfy.sh/bbq)
+
+If you want to use fahrenheit, just remove the celsius values:
+
+```sh
+temperature_minimum_fahrenheit: 225
+temperature_maximum_fahrenheit: 250
+temperature_minimum_celsius:
+temperature_maximum_celsius:
+```
+
+It is strongly advised to update the `ntfy` config `topic` from the default `bbq` to something more unique to you:
+
+```sh
+  ntfy:
+    topic: bbq-barry122
+```
+
+Otherwise you will share temps with the world and receive the temps of others :)
+
+## Simple deployment
 
 Get the required files onto the rpi3. You can use whatever method you like, this will put them in the pitmaster's home directory from a bash shell:
 
@@ -102,6 +161,8 @@ You should now be reading temperatures!
 ![img](docs/run-monitor-script.png)
 
 Press `Ctrl+C` to stop
+
+Your push notifications [can be found here](https://ntfy.sh/bbq) by default. Use the website or download the ntfy app for a more streamlined experience. Note: you really should be using your own personalised ntfy `topic` or better yet, selfhost your own ntfy instance covered in the full deployment.
 
 ## Full deployment
 
