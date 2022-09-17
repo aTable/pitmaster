@@ -1,0 +1,14 @@
+temperature_display_mode: #automatically calculated, no need to provide
+temperature_minimum_fahrenheit: 225
+temperature_maximum_fahrenheit: 250
+temperature_minimum_celsius: 107.222
+temperature_maximum_celsius: 121.111
+read_temperature_after_seconds: 5
+indicate_led_for_seconds: 2
+push_notification: 
+  ntfy:
+    topic: smoke
+    title: bbq
+    servers: 
+      - http://0.0.0.0:30000
+      # - https://ntfy.sh

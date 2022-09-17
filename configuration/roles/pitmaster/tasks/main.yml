@@ -1,0 +1,38 @@
+---
+# - name: Install a list of packages
+#   ansible.builtin.apt:
+#     pkg:
+#     - python3
+#     - python3-pip
+#     - neovim
+#     - podman
+#     - libnss3-tools
+#     - apt-transport-https
+
+# - name: install pip packages
+#   ansible.builtin.command: pip3 install --upgrade setuptools
+
+# - name: install pip packages
+#   ansible.builtin.command: pip3 install RPi.GPIO
+
+- name: Creates directory
+  ansible.builtin.file:
+    path: "/etc/{{ application_name }}"
+    state: directory
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+    mode: "500"
+    recurse: false
+    
+- name: copy files
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/etc/{{ application_name }}/"
+    mode: '700'
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+  loop:
+    - ../../../config.yml
+    - ../../../monitor.py
+    # - ../../../main.sh
+    # - ../../../requirements.txt

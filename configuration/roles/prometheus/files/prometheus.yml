@@ -1,0 +1,36 @@
+global:
+  scrape_interval: 2m
+
+rule_files:
+  - "alert.rules"
+  # - "synapse-v2.rules"
+
+alerting:
+  alertmanagers:
+    - scheme: http
+      static_configs:
+        - targets:
+            - "0.0.0.0:30021"
+
+scrape_configs:
+  - job_name: cadvisor
+    scrape_interval: 30s
+    static_configs:
+      - targets:
+          - 0.0.0.0:30024
+  - job_name: prometheus
+    static_configs:
+      - targets:
+          - 0.0.0.0:30020
+  - job_name: node-exporter
+    scrape_interval: 30s
+    static_configs:
+      - targets:
+          - 0.0.0.0:30023
+  - job_name: grafana
+    static_configs:
+      - targets:
+          - 0.0.0.0:30022
+  - job_name: caddy
+    static_configs:
+      - targets: ["0.0.0.0:2019"]

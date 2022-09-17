@@ -1,0 +1,48 @@
+---
+# - name: Creates directory
+#   ansible.builtin.file:
+#     path: "{{ item }}"
+#     state: directory
+#     owner: "{{ ansible_ssh_user }}"
+#     group: "{{ ansible_ssh_user }}"
+#     mode: "600"
+#     recurse: false
+#   loop:
+#     - "/var/{{ application_name }}"
+#     - "/var/{{ application_name }}/data"
+#     - "/var/{{ application_name }}/config"
+
+- name: Creates directory
+  ansible.builtin.file:
+    path: "/etc/{{ application_name }}"
+    state: directory
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+    mode: "500"
+    recurse: false
+
+- name: copy files
+  ansible.builtin.copy:
+    src: "files/"
+    dest: "/etc/{{ application_name }}"
+    force: yes
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+    mode: "500"
+
+# - name: Create container
+#   become: true
+#   # become_user: "root" # run as rootful podman container for rootful networking
+#   become_user: "{{ ansible_ssh_user }}"
+#   containers.podman.podman_container:
+#     name: "{{ application_name }}"
+#     image: docker.io/library/caddy
+#     recreate: yes
+#     volume:
+#       - "/etc/{{ application_name }}/Caddyfile:/etc/caddy/Caddyfile"
+#       - "/etc/{{ application_name }}/dashboard:/etc/caddy/dashboard"
+#       - "/var/{{ application_name }}/data:/data"
+#       - "/var/{{ application_name }}/config:/config"
+#     publish:
+#       - "80:80"
+#       - "443:443"

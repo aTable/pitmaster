@@ -1,0 +1,14 @@
+---
+- name: Provision the pitmaster
+  hosts: rpi3
+  remote_user: pitmaster
+  # remote_user: user
+  become: yes
+  # become_method: sudo
+  roles:
+    - pitmaster
+    - ntfy
+    - caddy
+    # - prometheus
+    # - prometheus_alertmanager
+    # - grafana

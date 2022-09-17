@@ -1,0 +1,28 @@
+{
+        debug
+        skip_install_trust
+        auto_https disable_redirects
+        log troubleshooting {
+		output  stdout
+		level   info
+	}
+
+}
+
+http:// {
+        root * /etc/caddy/dashboard
+        file_server browse
+}
+
+https://192.168.1.96 {
+        tls internal {
+        }
+        root * /etc/caddy/dashboard
+        file_server browse
+}
+
+https://192.168.1.96:30001 {
+        tls internal {
+        }
+        reverse_proxy http://127.0.0.1:30000
+}

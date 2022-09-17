@@ -1,0 +1,15 @@
+groups:
+# https://github.com/samber/awesome-prometheus-alerts
+- name: sample
+  rules:
+  - alert: Push notification test
+    expr: prometheus_build_info
+    for: 5s
+    labels:
+      severity: warning
+      priority: 3
+      topic: system
+    annotations:
+      summary: Forced alert (instance {{ $labels.instance }})
+      description: "Youre running prometheus! Nice! \nVALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+  

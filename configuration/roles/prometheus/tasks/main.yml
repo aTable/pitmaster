@@ -1,0 +1,38 @@
+---
+- name: Creates directory
+  ansible.builtin.file:
+    path: "/etc/{{ application_name }}"
+    state: directory
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+    mode: "500"
+    recurse: false
+
+- name: copy files
+  ansible.builtin.copy:
+    src: "files/"
+    dest: "/etc/{{ application_name }}"
+    force: yes
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+    mode: "500"
+
+- name: Create container
+  become: true
+  become_user: "{{ ansible_ssh_user }}"
+  containers.podman.podman_container:
+    name: "{{ application_name }}"
+    image: quay.io/prometheus/prometheus:latest
+    recreate: true
+    # userns: keep-id
+    # security_opt:
+    #   - label=disable
+    # user: 1000:1000 # id of master
+    volume:
+      - "/etc/{{ application_name }}/prometheus.yml:/etc/prometheus/prometheus.yml:z"
+      - "/etc/{{ application_name }}/alert.rules:/etc/prometheus/alert.rules:z"
+    publish:
+      - 30020:9090
+    # env:
+    #   PUID: 535 # rootless container, intentionally run as root (or fix podman user id mapping)
+    #   PGID: 535 # rootless container, intentionally run as root (or fix podman user id mapping)

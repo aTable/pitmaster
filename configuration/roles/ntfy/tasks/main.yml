@@ -1,0 +1,54 @@
+---
+- name: Creates directory
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+    mode: "600"
+    recurse: false
+  loop:
+    - "/var/{{ application_name }}"
+    - "/var/{{ application_name }}/cache"
+    - "/var/{{ application_name }}/etc"
+
+- name: Creates directory
+  ansible.builtin.file:
+    path: "/etc/{{ application_name }}"
+    state: directory
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+    mode: "500"
+    recurse: false
+
+- name: copy files
+  ansible.builtin.copy:
+    src: "files/"
+    dest: "/etc/{{ application_name }}"
+    force: yes
+    owner: "{{ ansible_ssh_user }}"
+    group: "{{ ansible_ssh_user }}"
+    mode: "500"
+
+# - name: Allow user to run rootless containers
+#   ansible.builtin.lineinfile:
+#     path: "{{ item }}"
+#     search_string: "{{ user }}"
+#     line: "{{ user }}:102000:5"
+#   loop:
+#     - /etc/subuid
+#     - /etc/subgid
+
+- name: Create container
+  become: true
+  become_user: "{{ ansible_ssh_user }}"
+  containers.podman.podman_container:
+    name: "{{ application_name }}"
+    image: docker.io/binwiederhier/ntfy
+    volume:
+      - "/var/{{ application_name }}/cache:/var/cache/ntfy"
+      - "/etc/{{ application_name }}/server.yml:/etc/ntfy/server.yml"
+      - "/var/{{ application_name }}/etc:/etc/ntfy"
+    publish:
+      - 30000:80
+    command: serve
