@@ -2,9 +2,19 @@
 
 ## Hardware parts
 
-| Item           | Purpose       |
-| -------------- | ------------- |
-| rpi 3 model B+ | mini computer |
+| Item                                                                                                                 | Purpose                        |
+| -------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| [rpi 3 model B+](https://core-electronics.com.au/raspberry-pi-3-model-b-plus.html)                                   | mini computer                  |
+| [MAX31855](https://core-electronics.com.au/thermocouple-amplifier-max31855-breakout-board-max6675-upgrade-v2-0.html) | Read thermocouple              |
+| [K-type thermocouple](https://core-electronics.com.au/thermocouple-type-k-glass-braid-insulated.html)                | read temperatures              |
+| [heatsink](https://core-electronics.com.au/al-heat-sink-with-adhesive-tape-28x28x9mm.html)                           | reduce board temperature       |
+| [Female to male jumper cables](https://core-electronics.com.au/jumper-wires-7-8-f-m-high-quality-30-pack.html)       | connect pi GPIO to breadboard  |
+| [breadboard](https://core-electronics.com.au/solderless-breadboard-830-tie-point-zy-102.html)                        | create circuits                |
+| [LEDs](https://core-electronics.com.au/5mm-leds-100-pcs-pack-20x-red-green-blue-yellow-white.html)                   | visually indicate current temp |
+| [solder](https://core-electronics.com.au/solder-leaded-15-gram-tube.html)                                            | create circuits                |
+| [soldering iron](https://core-electronics.com.au/hakko-red-soldering-iron-20w.html)                                  | melt solder                    |
+| [jumper wire kit](https://core-electronics.com.au/jumper-wire-kit.html)                                              | connect circuits on breadboard |
+| [resistors](https://core-electronics.com.au/resistor-kit-1-4w-500-total.html)                                        | create circuits                |
 
 ## Guide
 

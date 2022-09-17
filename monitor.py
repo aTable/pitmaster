@@ -1,17 +1,17 @@
-# SPDX-FileCopyrightText: 2021 ladyada for Adafruit Industries
-# SPDX-License-Identifier: MIT
-
-from time import sleep
 import board
 import digitalio
 import adafruit_max31855
-import yaml
-import io
-import requests
 import RPi.GPIO as GPIO
+from time import sleep
+import yaml
+import requests
 from timeit import default_timer as timer
 import urllib3
+import os
+import json
+from utils import convert_celsius_to_fahrenheit, convert_fahrenheit_to_celsius
 
+CURRENT_SCRIPT_PATH = os.path.dirname(os.path.realpath(__file__))
 urllib3.disable_warnings()
 
 degree_sign = u'\N{DEGREE SIGN}'
@@ -52,20 +52,6 @@ def load_config():
 config = load_config()
 
 
-def convert_fahrenheit_to_celsius(temperature):
-    return (temperature - 32) * (5/9)
-
-
-def convert_celsius_to_fahrenheit(temperature):
-    return (temperature * 9/5) + 32
-
-
-def read_current_temperature_celsius(max31855):
-    tempC = max31855.temperature
-    tempF = tempC * 9 / 5 + 32
-    return tempC
-
-
 def pretty_print_temperature(config, temperature_celsius):
     if config['temperature_display_mode'] == 'fahrenheit':
         return f"{str(convert_celsius_to_fahrenheit(temperature_celsius))}{degree_sign}F"
@@ -94,8 +80,10 @@ if __name__ == '__main__':
     try:
         print(f"DEBUG: starting monitoring. All hail the pitmaster, may your beef be grain fed and your pork tender.")
         while True:
-            current_temperature_celsius = read_current_temperature_celsius(
-                max31855)
+            current_temperature_celsius = max31855.temperature
+            with open(os.path.join(CURRENT_SCRIPT_PATH, 'pitmaster_export.json'), 'w') as f:
+                json.dump(
+                    {'current_temperature_celsius': current_temperature_celsius}, f)
             if current_temperature_celsius >= config['temperature_minimum_celsius'] and current_temperature_celsius < config['temperature_maximum_celsius']:
                 print(
                     f"\tDEBUG: current temp '{pretty_print_temperature(config, current_temperature_celsius)}' IS within allowed range {pretty_print_temperature(config, config['temperature_minimum_celsius'])}-{pretty_print_temperature(config, config['temperature_maximum_celsius'])}")

@@ -21,7 +21,7 @@
     state: directory
     owner: "{{ ansible_ssh_user }}"
     group: "{{ ansible_ssh_user }}"
-    mode: "500"
+    mode: "700"
     recurse: false
     
 - name: copy files
@@ -34,5 +34,7 @@
   loop:
     - ../../../config.yml
     - ../../../monitor.py
+    - ../../../pitmaster_exporter.py
+    - ../../../utils.py
+    - ../../../requirements.txt
     # - ../../../main.sh
-    # - ../../../requirements.txt

@@ -1,0 +1,14 @@
+---
+- name: Create container
+  become: true
+  become_user: "{{ ansible_ssh_user }}"
+  containers.podman.podman_container:
+    name: "{{ application_name }}"
+    image: ghcr.io/atable/ntfy_alertmanager_bridge:main
+    recreate: true
+    publish:
+      - 30025:30000
+    env:
+      NTFY_SERVER_ADDRESS: http://192.168.1.96:30000
+      # PUID: 0 # rootless container, intentionally run as root (or fix podman user id mapping)
+      # PGID: 0 # rootless container, intentionally run as root (or fix podman user id mapping)

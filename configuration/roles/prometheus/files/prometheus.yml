@@ -10,27 +10,32 @@ alerting:
     - scheme: http
       static_configs:
         - targets:
-            - "0.0.0.0:30021"
+            - "192.168.1.96:30021"
 
 scrape_configs:
   - job_name: cadvisor
     scrape_interval: 30s
     static_configs:
       - targets:
-          - 0.0.0.0:30024
+          - 192.168.1.96:30024
   - job_name: prometheus
     static_configs:
       - targets:
-          - 0.0.0.0:30020
+          - 192.168.1.96:30020
   - job_name: node-exporter
     scrape_interval: 30s
     static_configs:
       - targets:
-          - 0.0.0.0:30023
+          - 192.168.1.96:30023
+  - job_name: pitmaster-exporter
+    scrape_interval: 5s
+    static_configs:
+      - targets:
+          - 192.168.1.96:30026
   - job_name: grafana
     static_configs:
       - targets:
-          - 0.0.0.0:30022
+          - 192.168.1.96:30022
   - job_name: caddy
     static_configs:
-      - targets: ["0.0.0.0:2019"]
+      - targets: ["192.168.1.96:2019"]

@@ -1,12 +1,15 @@
 ---
 - name: Creates directory
   ansible.builtin.file:
-    path: "/etc/{{ application_name }}"
+    path: "{{ item }}"
     state: directory
     owner: "{{ ansible_ssh_user }}"
     group: "{{ ansible_ssh_user }}"
-    mode: "500"
+    mode: "600"
     recurse: false
+  loop:
+    - "/etc/{{ application_name }}"
+    - "/var/{{ application_name }}-cache"
 
 - name: copy files
   ansible.builtin.copy:
@@ -22,17 +25,15 @@
   become_user: "{{ ansible_ssh_user }}"
   containers.podman.podman_container:
     name: "{{ application_name }}"
-    image: quay.io/prometheus/prometheus:latest
+    image: quay.io/prometheus/alertmanager:latest
     recreate: true
     userns: keep-id
-    # security_opt:
-    #   - label=disable
-    user: 1000:1000
+    user: "1000:1000" 
     volume:
-      - "/etc/{{ application_name }}/prometheus.yml:/etc/prometheus/prometheus.yml:z"
-      - "/etc/{{ application_name }}/alert.rules:/etc/prometheus/alert.rules:z"
+      - "/etc/{{ application_name }}/alertmanager.yml:/etc/alertmanager/alertmanager.yml"
+    # - "/etc/{{ application_name }}/alertmanager/data/:/alertmanager/data"
     publish:
-      - 30020:9090
-    # env:
-    #   PUID: 535 # rootless container, intentionally run as root (or fix podman user id mapping)
-    #   PGID: 535 # rootless container, intentionally run as root (or fix podman user id mapping)
+      - 30021:9093
+    env:
+      # PUID: 0 # rootless container, intentionally run as root (or fix podman user id mapping)
+      # PGID: 0 # rootless container, intentionally run as root (or fix podman user id mapping)

@@ -22,17 +22,18 @@
   become_user: "{{ ansible_ssh_user }}"
   containers.podman.podman_container:
     name: "{{ application_name }}"
-    image: quay.io/prometheus/prometheus:latest
+    image: docker.io/grafana/grafana:latest
     recreate: true
     userns: keep-id
     # security_opt:
     #   - label=disable
     user: 1000:1000
     volume:
-      - "/etc/{{ application_name }}/prometheus.yml:/etc/prometheus/prometheus.yml:z"
-      - "/etc/{{ application_name }}/alert.rules:/etc/prometheus/alert.rules:z"
+      - "/etc/{{ application_name }}/provisioning/:/etc/grafana/provisioning/"
     publish:
-      - 30020:9090
+      - 30022:3000
+    env_file: "/etc/{{ application_name }}/.env"
+
     # env:
     #   PUID: 535 # rootless container, intentionally run as root (or fix podman user id mapping)
     #   PGID: 535 # rootless container, intentionally run as root (or fix podman user id mapping)

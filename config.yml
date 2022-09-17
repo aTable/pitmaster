@@ -6,6 +6,8 @@ temperature_maximum_celsius: 121.111
 read_temperature_after_seconds: 5
 indicate_led_for_seconds: 2
 push_notification: 
+  pushover: 
+    abc: 123
   ntfy:
     topic: smoke
     title: bbq
