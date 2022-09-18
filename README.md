@@ -4,7 +4,16 @@ Build your own bbq monitoring solution. Eventually, I'll update with a fan to co
 
 ## What is it
 
-A temperature probe in a smoker connected to a device that frequently reads the temperature and analyzes it.
+A temperature probe in a smoker connected to a device that frequently reads the temperature and analyzes it sending push notifications over wifi. Be connected to your smoker temps globally.
+
+Features:
+
+- configure a preferred temperature range e.g. 107&deg;C-121&deg;C (225&deg;F - 250&deg;F)
+  - if temperature is outside the configured temperature range, flash a red LED and send a push notification
+  - if temperature is within the configured temperature range, flash a green LED
+- periodically receive current temperature by push notification (for when you don't trust it)
+- a basic dashboard showing live temperature tracking
+- a more complex full setup powered by the prometheus stack is available
 
 For normals
 
@@ -14,18 +23,15 @@ For fahrenheiters
 
 ![img](docs/run-monitor-script-fahrenheit.png)
 
-- if its outside the configured temperature range, flash a red LED and send a push notification
-- if its within the configured temperature range, flash a green LED
-
 [Ntfy](https://ntfy.sh/) is used for push notifications which has a phone app and website so you can receive real time updates anywhere:
 
 ![img](docs/ntfy-message.PNG)
 
-Also included is a website that really only serves to provide convenient links
+The dashboard showing live temperatures
 
 ![img](docs/homepage.PNG)
 
-To a grafana dasboard
+The grafana dashboard available in the full setup
 
 ![img](docs/grafana-dashboard.png)
 

@@ -1,10 +1,11 @@
 start_message: "DEBUG: All hail the pitmaster, may your beef be grain fed and your pork tender."
+time_format: '%I:%M%p' # '%H:%M' for 24 hours. Refer to https://docs.python.org/3.3/library/time.html?highlight=time.strftime#time.strftime
 temperature_minimum_fahrenheit: 225
 temperature_maximum_fahrenheit: 250
 temperature_minimum_celsius: 107.22
 temperature_maximum_celsius: 121.11
 read_temperature_after_seconds: 5
-notify_temperature_every_seconds: 300
+send_mandatory_report_every_seconds: 300
 indicate_led_for_seconds: 2
 push_notification: 
   pushover: 

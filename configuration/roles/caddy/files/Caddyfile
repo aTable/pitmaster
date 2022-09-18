@@ -26,3 +26,8 @@ https://192.168.1.96:30001 {
         }
         reverse_proxy http://127.0.0.1:30000
 }
+https://192.168.1.96:30002 {
+        tls internal {
+        }
+        reverse_proxy http://127.0.0.1:30027
+}
