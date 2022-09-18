@@ -31,6 +31,8 @@
     volume:
       - "/etc/{{ application_name }}/prometheus.yml:/etc/prometheus/prometheus.yml:z"
       - "/etc/{{ application_name }}/alert.rules:/etc/prometheus/alert.rules:z"
+      - "/etc/{{ application_name }}/pitmaster.rules:/etc/prometheus/pitmaster.rules:z"
+      - "/etc/{{ application_name }}/awesome_prometheus.rules:/etc/prometheus/awesome_prometheus.rules:z"
     publish:
       - 30020:9090
     # env:

@@ -1,16 +1,17 @@
+start_message: "DEBUG: All hail the pitmaster, may your beef be grain fed and your pork tender."
 temperature_minimum_fahrenheit: 225
 temperature_maximum_fahrenheit: 250
-temperature_minimum_celsius: 107.222
-temperature_maximum_celsius: 121.111
+temperature_minimum_celsius: 107.22
+temperature_maximum_celsius: 121.11
 read_temperature_after_seconds: 5
+notify_temperature_every_seconds: 300
 indicate_led_for_seconds: 2
 push_notification: 
   pushover: 
     abc: 123
   ntfy:
-    topic: bbq
-    title: temperature
+    topic: pitmaster
     servers: 
       - https://ntfy.sh
       # - http://0.0.0.0:30000
-temperature_display_mode: #automatically calculated, no need to provide
+temperature_display_mode: # automatically calculated by your configuration, no need to provide. Will either resolve to 'celsius' or 'fahrenheit'

@@ -130,18 +130,16 @@ Otherwise you will share temps with the world and receive the temps of others :)
 
 ## Simple deployment
 
-Get the required files onto the rpi3. You can use whatever method you like, this will put them in the pitmaster's home directory from a bash shell:
-
-```sh
-rsync config.yml pitmaster@192.168.1.96:~/
-rsync monitor.py pitmaster@192.168.1.96:~/
-rsync requirements.txt pitmaster@192.168.1.96:~/
-```
-
 SSH into the pi
 
 ```sh
 ssh pitmaster@192.168.1.96
+```
+
+Grab the files from this repository
+
+```sh
+git clone https://github.com/aTable/pitmaster
 ```
 
 Install the required dependencies
@@ -178,14 +176,71 @@ The full setup includes:
 - ntfy push notification server
 - caddy reverse proxy
 
-Create an SSH key on your host, start an SSH agent and add the key
+The high level flow:
+
+- `monitor.py` reads every `config.yml` property `read_temperature_after_seconds` seconds
+  - saves temperature and current time to disk in `pitmaster_export.json`
+  - immediate range check to blink LEDs and send push notification
+- `pitmaster_exporter.py` reads `pitmaster_export.json` every 5 seconds and exposes metrics for prometheus
+- prometheus scrapes pitmaster exporter every 5 seconds
+  - [rules](configuration/roles/prometheus/files/) are applied to scraped metrics
+    - when any rule is triggered, [prometheus notifies](configuration/roles/prometheus/files/prometheus.yml) alertmanager
+    - [alertmanager pushes](configuration/roles/prometheus_alertmanager/files/alertmanager.yml) to the ntfy_alertmanager_bridge receiver
+    - [ntfy_alertmanager_bridge pushes](configuration/roles/prometheus_alertmanager_ntfy_bridge/tasks/main.yml) to ntfy
+- ntfy sends the notification to your connected browser or mobile app
+
+On your desktop computer, Create an SSH key
+
+```sh
+ssh-keygen -t ed25519 -a 100
+```
+
+start an SSH agent
+
+```sh
+eval $(ssh-agent -s)
+```
+
+add the key to the running agent
+
+```sh
+ssh-add ~/.ssh/id_ed25519
+```
 
 Create the user on the pi
 
+```sh
+sudo adduser pitmaster
+```
+
 Add the created SSH key to the pi user's `~/.ssh/authorized_keys`
+
+```sh
+nvim ~/.ssh/authorized_keys
+```
+
+All the steps outlined above only needs to be done once.
 
 Provision with ansible
 
 ```sh
 ansible-playbook -i configuration/production.yml configuration/rpi3.yml
+```
+
+Run caddy to serve the website and ntfy instance on https:// (required for live push notifications)
+
+```sh
+caddy start --config /etc/caddy/Caddyfile
+```
+
+Run pitmaster exporter to expose metrics to prometheus
+
+```sh
+python3 /etc/pitmaster/pitmaster_exporter.py
+```
+
+Run the monitor
+
+```sh
+python3 /etc/pitmaster/monitor.py
 ```

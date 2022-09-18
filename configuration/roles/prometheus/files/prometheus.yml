@@ -3,7 +3,8 @@ global:
 
 rule_files:
   - "alert.rules"
-  # - "synapse-v2.rules"
+  - "pitmaster.rules"
+  - "awesome_prometheus.rules"
 
 alerting:
   alertmanagers:
