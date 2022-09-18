@@ -20,7 +20,40 @@ function initializeChart(res) {
   const config = {
     type: "line",
     data: data,
-    options: {},
+    options: {
+      plugins: {
+        autocolors: false,
+        annotation: {
+          annotations: {
+            box1: {
+              type: "box",
+              xMin: 0,
+              xMax: 100000000000000,
+              yMin: 107.1,
+              yMax: 121.2,
+              backgroundColor: "rgba(0, 151, 52, 0.2)",
+            },
+          },
+        },
+      },
+      scales: {
+        x: {
+          title: {
+            display: true,
+            text: "Time",
+          },
+        },
+        y: {
+          beginAtZero: true,
+          min: 0,
+          max: 200,
+          title: {
+            display: true,
+            text: "Celsius",
+          },
+        },
+      },
+    },
   };
   const allReadings = new Chart(document.getElementById("all-readings"), config);
 }
